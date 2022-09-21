@@ -42,10 +42,6 @@ max_line_len = pref["max_line_length"]
 def addLyricsSlide(lyric,textType,imgPath):
     slide = prs.slides.add_slide(prs.slide_layouts[5])
 
-    #TODO Make this background image at some point, not a shape
-    if imgPath!="":
-        bg = slide.shapes.add_picture(imgPath, 0, 0, prs.slide_width, prs.slide_height) 
-
     title = slide.shapes.title
 
     title.width = ppt_inch(16)
@@ -76,6 +72,11 @@ def addLyricsSlide(lyric,textType,imgPath):
     #titleFont2 = title.text_frame.paragraphs[0].font
     titleFont.size = ppt_pt(ptTable[textType])
     titleFont.name = pref["typeface"]
+
+    #TODO Make this background image at some point, not a shape
+    if imgPath!="":
+        bg = slide.shapes.add_picture(imgPath, 0, 0, prs.slide_width, prs.slide_height) 
+        slide.shapes._spTree.insert(2, bg._element)
 
 #print(lyricsRaw.splitlines())
 
