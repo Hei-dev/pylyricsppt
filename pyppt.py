@@ -7,6 +7,7 @@ from pptx.util import Inches as ppt_inch
 from pptx.util import Cm as ppt_cm
 from pptx.util import Pt as ppt_pt
 from pptx.enum.text import PP_ALIGN
+from pptx.dml.color import RGBColor
 
 import PIL
 
@@ -15,6 +16,7 @@ from collections import defaultdict
 import json
 from pptx.enum.dml import MSO_FILL
 from os import path
+import colorsys
 
 prs = pptx.Presentation()
 prs.slide_width = pptx.util.Inches(16)
@@ -40,6 +42,10 @@ ptTable = pref["size"]
 max_line_len = pref["max_line_length"]
 
 def addLyricsSlide(lyric,textType,imgPath):
+    # Check if imga eneeds to be analysed
+    if (picname not in cacheImageData) and (picname!=""):
+        analysePic(picname)
+
     slide = prs.slides.add_slide(prs.slide_layouts[5])
 
     title = slide.shapes.title
@@ -63,6 +69,9 @@ def addLyricsSlide(lyric,textType,imgPath):
             titleFont = title.text_frame.paragraphs[lyric_multiline.index(ly_l)].font
             titleFont.size = ppt_pt(ptTable[textType])
             titleFont.name = pref["typeface"]
+
+            if picname != "":
+                titleFont.color.rgb = cacheImageData[imgPath]["textColor"]
     else:
         title.text = lyric_nopun
 
@@ -72,6 +81,8 @@ def addLyricsSlide(lyric,textType,imgPath):
     #titleFont2 = title.text_frame.paragraphs[0].font
     titleFont.size = ppt_pt(ptTable[textType])
     titleFont.name = pref["typeface"]
+    if picname != "":
+        titleFont.color.rgb = cacheImageData[imgPath]["textColor"]
 
     #TODO Make this background image at some point, not a shape
     if imgPath!="":
@@ -87,13 +98,29 @@ curVerse = ""
 curVerseLy = []
 
 def analysePic(picPath):
+    #f_p = open(picPath,encoding="utf-16")
     picbg = PIL.Image.open(picPath).convert("HSV")
+    cacheImageData[picPath] = {}
+    #f_p.close()
+
     pic_w,pic_h = picbg.size
     pic_px = picbg.load()
+    avg_v_middle = 0
+    mid_count = 0
     for x in range(0,pic_w):
         for y in range(0,pic_h):
-            print(pic_px[x,y])
+            #print(pic_px[x,y])
             #TODO analyse the min max of each H, S, V (analyse for whole pic and the middle (1/3) part)
+            if y>=pic_h/3 and y<=pic_h/3*2:
+                avg_v_middle += pic_px[x,y][2]
+                mid_count += 1
+    
+    avg_v_middle = avg_v_middle / mid_count
+    if avg_v_middle < 127:
+        cacheImageData[picPath]["textColor"] = RGBColor(0x00,0x00,0x00)
+    else:
+        cacheImageData[picPath]["textColor"] = RGBColor(0xFF,0xFF,0xFF)
+
 #analysePic("source/高唱入雲/V.jpg")
 
 def appendToSongLy():
@@ -137,6 +164,7 @@ for k_title in songLy.keys():
             picname = ""
     else:
         picname = ""
+    
     addLyricsSlide(k_title,"Title",picname)
     for k_verse_r in songLy[k_title].keys():
         k_verse = k_verse_r.replace(":","")
@@ -150,7 +178,6 @@ for k_title in songLy.keys():
             else:
                 picname = ""
         else:
-            print("fgwey")
             picname = ""
 
         for lyr in songLy[k_title][k_verse+":"]:
