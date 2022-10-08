@@ -6,10 +6,10 @@
  Python 3
  Python pptx (pip install python-pptx)
 
-Steps\
-1. After downloading the program/script, create a folder in the directory of the .py file.\
-2. Create a file named "lyrics.txt" in that folder.\
-3. Add the lyrics to "lyrics.txt" with the following format:\
+## Procedures\
+Step 1. After downloading the program/script, create a folder in the directory of the .py file.\
+Step 2. Create a file named "lyrics.txt" in that folder.\
+Step 3. Add the lyrics to "lyrics.txt" with the following format:\
  - Indicate the start of the song with "T:"
 `T:Title`
  - Indicate the lyrics (Verse) with "V:", followed by the verse lyrics (New line=New slide)
@@ -115,3 +115,16 @@ B:
 Yes I do
 I always do
 ```
+Step 4. Create a file named "font.json". Paste the following content into the file:
+```
+{
+  "typeface":"FONT"
+  "size":{
+    "Title":145,
+    "Lyrics":80
+  }
+  "max_line_length":14
+}
+```
+ - Change `FONT` with the font name intended to use.
+ - Replace any other integer value with user's preference
