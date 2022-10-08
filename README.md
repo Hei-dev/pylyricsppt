@@ -1,10 +1,11 @@
 # PyLyricsPPT
  A python script to create lyrics PowerPoint automatically
 
-## Software used
+## Software / Library required
  **Install these software beforehand**
- Python 3
- Python pptx (pip install python-pptx)
+ Python 3 (https://www.python.org/downloads/)
+ Python pptx (In terminal: ```pip3 install python-pptx```)
+ - For Windows, Python pptx can be installed by opening "pptxInstall.bat" after installing Python
 
 ## Procedures
 Step 1. After downloading the program/script, create a folder in the directory of the .py file.\
@@ -118,15 +119,17 @@ I always do
 Step 4. Create a file named "font.json". Paste the following content into the file:
 ```
 {
-  "typeface":"FONT"
+  "typeface":"FONT",
   "size":{
     "Title":145,
     "Lyrics":80
-  }
+  },
+  "inverted_black_white":true,
   "max_line_length":14
 }
 ```
  - Change `FONT` with the font name intended to use.
+ - Change "inverted_black_white" between true or false to indicate if effects will be applied to make the text be in contrast to the background. (False will make the text be in contrast WITHOUT applying effect, while True will require human input to make the text be contrast with the backgroud)
  - Replace any other integer value with user's preference
 
 Step 5(OPTIONAL). Insert background images:\
@@ -135,7 +138,12 @@ Step 5(OPTIONAL). Insert background images:\
  5c. Rename the images to codes that represent the "places" that it is intended to use\
      e.g. V1.jpg refer to use V1.jpg for the slide background of the Verse 1 lyrics\
           For codes, refer to lyrics.txt (e.g. V1,B,C,C1,etc.)\
- 5d. Resize/Crop the images to the 16:9 ratio\
+ 5d. Resize/Crop the images to the 16:9 ratio
 
-Step 6: Run the command: `python3 pyppt.py`\
+Step 6: Run the command in a terminal: `python3 pyppt.py`\
+ - For Windows, simply open "Start.bat"
 File will be output as "test.pptx"
+
+## Troubleshooting
+ - PermissonError: Please check if your file is being opened in other software, for example PowerPoint.
+ - Other Errors: Contact me so that I can investigate in it.
