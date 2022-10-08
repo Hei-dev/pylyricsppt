@@ -6,10 +6,10 @@
  Python 3
  Python pptx (pip install python-pptx)
 
-## Procedures\
+## Procedures
 Step 1. After downloading the program/script, create a folder in the directory of the .py file.\
 Step 2. Create a file named "lyrics.txt" in that folder.\
-Step 3. Add the lyrics to "lyrics.txt" with the following format:\
+Step 3. Add the lyrics to "lyrics.txt" with the following format:
  - Indicate the start of the song with "T:"
 `T:Title`
  - Indicate the lyrics (Verse) with "V:", followed by the verse lyrics (New line=New slide)
@@ -128,3 +128,14 @@ Step 4. Create a file named "font.json". Paste the following content into the fi
 ```
  - Change `FONT` with the font name intended to use.
  - Replace any other integer value with user's preference
+
+Step 5(OPTIONAL). Insert background images:\
+ 5a. Create, for each of the songs, a folder named as the song title.\
+ 5b. Place images into the respective folder.\
+ 5c. Rename the images to codes that represent the "places" that it is intended to use\
+     e.g. V1.jpg refer to use V1.jpg for the slide background of the Verse 1 lyrics\
+          For codes, refer to lyrics.txt (e.g. V1,B,C,C1,etc.)\
+ 5d. Resize/Crop the images to the 16:9 ratio\
+
+Step 6: Run the command: `python3 pyppt.py`\
+File will be output as "test.pptx"
