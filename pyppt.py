@@ -51,7 +51,7 @@ def addLyricsSlide(lyric,textType,imgPath):
     title = slide.shapes.title
 
     title.width = ppt_inch(16)
-    title.height = ppt_inch(1.45)
+    title.height = ppt_inch(2.9)
 
     title.top = int((prs.slide_height - title.height) / 2)
     title.left = ppt_inch(0)
@@ -78,7 +78,6 @@ def addLyricsSlide(lyric,textType,imgPath):
     titleLayout = title.text_frame.paragraphs[0]
     titleLayout.alignment = PP_ALIGN.CENTER
     titleFont = title.text_frame.paragraphs[0].font
-    #titleFont2 = title.text_frame.paragraphs[0].font
     titleFont.size = ppt_pt(ptTable[textType])
     titleFont.name = pref["typeface"]
     if picname != "":
@@ -89,7 +88,6 @@ def addLyricsSlide(lyric,textType,imgPath):
         bg = slide.shapes.add_picture(imgPath, 0, 0, prs.slide_width, prs.slide_height) 
         slide.shapes._spTree.insert(2, bg._element)
 
-#print(lyricsRaw.splitlines())
 
 #Process the lyrics: Categorizze them
 songLy = {}
@@ -109,7 +107,6 @@ def analysePic(picPath):
     mid_count = 0
     for x in range(0,pic_w):
         for y in range(0,pic_h):
-            #print(pic_px[x,y])
             #TODO analyse the min max of each H, S, V (analyse for whole pic and the middle (1/3) part)
             if y>=pic_h/3 and y<=pic_h/3*2:
                 avg_v_middle += pic_px[x,y][2]
@@ -117,11 +114,16 @@ def analysePic(picPath):
     
     avg_v_middle = avg_v_middle / mid_count
     if avg_v_middle < 127:
-        cacheImageData[picPath]["textColor"] = RGBColor(0x00,0x00,0x00)
+        if pref["inverted_black_white"]:
+            cacheImageData[picPath]["textColor"] = RGBColor(0x00,0x00,0x00)
+        else:
+            cacheImageData[picPath]["textColor"] = RGBColor(0xFF,0xFF,0xFF)
     else:
-        cacheImageData[picPath]["textColor"] = RGBColor(0xFF,0xFF,0xFF)
+        if pref["inverted_black_white"]:
+            cacheImageData[picPath]["textColor"] = RGBColor(0xFF,0xFF,0xFF)
+        else:
+            cacheImageData[picPath]["textColor"] = RGBColor(0x00,0x00,0x00)
 
-#analysePic("source/高唱入雲/V.jpg")
 
 def appendToSongLy():
     global curVerseLy
@@ -133,9 +135,7 @@ def replaceAllPuncuation(text):
     return text.replace("，"," ").replace("。"," ").replace("："," ").replace("."," ").replace(","," ").replace(":"," ").replace(";"," ")
 
 for line in lyricsRaw.splitlines():
-    #print(curVerse,line)
     if fnmatch.filter([line],"V?:") or fnmatch.filter([line],"V:") or fnmatch.filter([line],"C?:") or fnmatch.filter([line],"C:"):
-        #print("Change",curTitle,curVerse)
         appendToSongLy()
         curVerse = line
     elif fnmatch.filter([line],"B?:") or fnmatch.filter([line],"B:"):
@@ -145,8 +145,6 @@ for line in lyricsRaw.splitlines():
         appendToSongLy()
         curTitle = line[2:]
         songLy[curTitle] = {}
-    #elif line=="":
-    #    curVerse = line
     else:
         if line!="":
             curVerseLy.append(line)
