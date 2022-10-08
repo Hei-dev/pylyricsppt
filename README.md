@@ -1,4 +1,4 @@
-# PyPPT
+# PyLyricsPPT
  A python script to create lyrics PowerPoint automatically
 
 ## Software used
