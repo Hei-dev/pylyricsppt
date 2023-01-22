@@ -1,4 +1,6 @@
 # PyLyricsPPT
+ ***This project was discontinued in favor for a more powerful and user-friendly version of this. \
+ The new project is at https://github.com/Hei-dev/LyricsPPTGeneratorGUI .*** \
  A python script to create lyrics PowerPoint automatically
 
 ## Software / Library required
